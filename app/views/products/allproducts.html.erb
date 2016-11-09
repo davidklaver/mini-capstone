@@ -1,9 +1,15 @@
 <h1>Here Are All Our Products:</h1>
-
+<div class="productDiv">
 <% @all_products.each do |product| %>
-	<p><%= product.name %></p>
-	<p><%= product.price %></p>
-	<p><%= product.image %></p>
-	<p><%= product.description %></p>
-	<br>
+	<div>
+		<p><%= product.name %></p>
+		<p>$<%= product.price %></p>
+		<p><img src="<%= product.image %>"></p>
+		<p><%= product.description %></p>
+		<button type="button" class="btn btn-success">Add To Cart</button>
+		<br>
+		<br>
+		<br>
+	</div>
 <% end %>
+</div>
