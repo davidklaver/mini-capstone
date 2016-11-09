@@ -1,1 +1,9 @@
 <h1>Here Are All Our Products:</h1>
+
+<% @all_products.each do |product| %>
+	<p><%= product.name %></p>
+	<p><%= product.price %></p>
+	<p><%= product.image %></p>
+	<p><%= product.description %></p>
+	<br>
+<% end %>
