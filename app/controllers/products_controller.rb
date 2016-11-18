@@ -1,6 +1,12 @@
 class ProductsController < ApplicationController
 	def index
-		@products = Product.all
+		if params["sort"] == "asc"
+			@products = Product.order(:price)
+		elsif params["sort"] == "desc"
+			@products = Product.order(price: :desc)
+		else
+			@products = Product.all
+		end
 		# @message = params["key"]
 		render 'index.html.erb'
 	end
