@@ -1,0 +1,17 @@
+<h1>Here Is Your Product:</h1>
+<p><%= @product.name %></p>
+
+<p><img src="<%= @product.image %>"></p>
+<p><%= @product.description %></p>
+
+<h2><%= @product.sale_message %></h2>
+
+<p class=<%= @product.discount %>>
+	Price: $<%= @product.price %>	
+</p>
+<p>Tax: <%= number_to_currency(@product.tax) %></p>
+<p>Total: <%= number_to_currency(@product.total) %></p>
+
+
+<%= button_to("Edit Product", "/products/#{@product.id}/edit", method: :get) %>
+<%= button_to("Remove Product", "/products/#{@product.id}", method: :delete) %>

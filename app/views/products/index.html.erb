@@ -1,0 +1,17 @@
+<h1>Welcome To Dave's Shop!</h1>
+<div class="allProductsDiv">
+<% @products.each_slice(3) do |three_products| %>
+	<div class="row">
+	<% three_products.each do |product| %>
+		<div class="col-md-4 productDiv">
+			<h4><a href="/products/<%= product.id %>"><%= product.name %></a></h4>
+			<p>$<%= product.price %></p>
+			<p><img src="<%= product.image %>"></p>
+			<p><%= product.description %></p>
+			<a href="/products/<%= product.id %>"><button type="button" class="btn btn-success">View Product</button></a>
+			<a href="/products/<%= product.id %>"><button type="button" class="btn btn-success">Add To Cart</button></a>
+		</div>
+	<% end %>
+	</div>
+<% end %>
+</div>
