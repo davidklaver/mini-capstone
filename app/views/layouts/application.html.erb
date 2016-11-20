@@ -26,22 +26,23 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li class="active"><a href="/products?show=discount">Discount Items<span class="sr-only">(current)</span></a></li>
-        <li><a href="/products/<%= Product.offset(rand(Product.count)).first.id %>">Show Random Product</a></li>
+        <li><a href="/products/rand">Show Random Product</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort <span class="caret"></span></a>
           <ul class="dropdown-menu">
-            <li><a href="/products?sort=name">Sort By Product Name</a></li>
-            <li><a href="/products?sort=asc">Sort By Price (low to high)</a></li>
-            <li><a href="/products?sort=desc">Sort By Price (high to low)</a></li>
+            <li><a href="/products?sort_by=name&order=asc">Sort By Product Name (Ascending)</a></li>
+            <li><a href="/products?sort_by=name&order=desc">Sort By Product Name (Descending)</a></li>
+            <li><a href="/products?sort_by=price&order=asc">Sort By Price (low to high)</a></li>
+            <li><a href="/products?sort_by=price&order=desc">Sort By Price (high to low)</a></li>
           </ul>
         </li>
       </ul>
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+      <div id="searchDiv">
+        <%= form_tag '/products', method: :get do %>
+          <%= text_field_tag :search %>
+          <%= submit_tag "Search" %>
+        <% end %>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
         <li class="dropdown">

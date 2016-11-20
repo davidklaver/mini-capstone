@@ -1,28 +1,30 @@
 class ProductsController < ApplicationController
 	def index
-		if params["sort"] == "asc"
-			@products = Product.order(:price)
-		elsif params["sort"] == "desc"
-			@products = Product.order(price: :desc)
+		if params["sort_by"] && params["order"]
+			@products = Product.order(params["sort_by"] => params["order"])
 		elsif params["show"] == "discount"
 			@products = Product.where("price < ?", 5)
-		elsif params["sort"] == "name"
-			@products = Product.order(:name)
+		elsif params["search"]
+			@products = Product.where("name LIKE ?", "%#{params["search"]}%")
 		else
 			@products = Product.all
 		end
 		# @message = params["key"]
-		render 'index.html.erb'
 	end
 
 	def show
-		@id = params["id"]
+		if params["id"] == "rand"
+			# @id = Product.offset(rand(Product.count)).first.id
+			# The following is simpler, but slower:
+			@id = Product.all.sample.id
+		else
+			@id = params["id"]
+		end
 		@product = Product.find_by(id: @id)
 		render 'show.html.erb'
 	end
 
 	def new
-		render 'new.html.erb'
 	end
 
 	def create
@@ -35,7 +37,6 @@ class ProductsController < ApplicationController
 
 	def edit
 		@product = Product.find_by(id: params["id"])
-		render 'edit.html.erb'
 	end
 
 	def update
