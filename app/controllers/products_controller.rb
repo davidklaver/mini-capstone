@@ -4,6 +4,10 @@ class ProductsController < ApplicationController
 			@products = Product.order(:price)
 		elsif params["sort"] == "desc"
 			@products = Product.order(price: :desc)
+		elsif params["show"] == "discount"
+			@products = Product.where("price < ?", 5)
+		elsif params["sort"] == "name"
+			@products = Product.order(:name)
 		else
 			@products = Product.all
 		end
@@ -12,14 +16,9 @@ class ProductsController < ApplicationController
 	end
 
 	def show
-		# @all_products = Product.all
 		@id = params["id"]
 		@product = Product.find_by(id: @id)
 		render 'show.html.erb'
-	end
-
-	def cart
-		render 'cart.html.erb'
 	end
 
 	def new

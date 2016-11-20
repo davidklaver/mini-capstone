@@ -7,7 +7,7 @@
 <h2><%= @product.sale_message %></h2>
 
 <p class=<%= @product.discount %>>
-	Price: $<%= @product.price %>	
+	Price: <%= number_to_currency(@product.price) %>	
 </p>
 <p>Tax: <%= number_to_currency(@product.tax) %></p>
 <p>Total: <%= number_to_currency(@product.total) %></p>
