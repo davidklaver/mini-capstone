@@ -5,7 +5,7 @@ class ProductsController < ApplicationController
 		elsif params["show"] == "discount"
 			@products = Product.where("price < ?", 5)
 		elsif params["search"]
-			@products = Product.where("name LIKE ?", "%#{params["search"]}%")
+			@products = Product.where("name ILIKE ?", "%#{params["search"]}%")
 		else
 			@products = Product.all
 		end
