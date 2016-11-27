@@ -27,15 +27,17 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="/products?show=discount">Discount Items<span class="sr-only">(current)</span></a></li>
         <li><a href="/products/rand">Show Random Product</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="/products?sort_by=name&order=asc">Sort By Product Name (Ascending)</a></li>
-            <li><a href="/products?sort_by=name&order=desc">Sort By Product Name (Descending)</a></li>
-            <li><a href="/products?sort_by=price&order=asc">Sort By Price (low to high)</a></li>
-            <li><a href="/products?sort_by=price&order=desc">Sort By Price (high to low)</a></li>
-          </ul>
-        </li>
+        <% if current_page?(:controller => 'products', :action => 'index') %>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sort <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/products?sort_by=name&order=asc">Sort By Product Name (Ascending)</a></li>
+              <li><a href="/products?sort_by=name&order=desc">Sort By Product Name (Descending)</a></li>
+              <li><a href="/products?sort_by=price&order=asc">Sort By Price (low to high)</a></li>
+              <li><a href="/products?sort_by=price&order=desc">Sort By Price (high to low)</a></li>
+            </ul>
+          </li>
+        <% end %>
       </ul>
       <div id="searchDiv">
         <%= form_tag '/products', method: :get do %>
@@ -44,7 +46,16 @@
         <% end %>
         </div>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#">Link</a></li>
+        <% if current_user %>
+          <li><a href="#">Welcome <%= current_user.name %>!</a></li>
+          <li><a href="/logout">Log Out</a></li>
+        <% else %>
+          <li><a href="/signup">Sign Up</a></li>
+         <li><a href="/login">Log In</a></li>
+        <% end %>
+
+        
+         
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">

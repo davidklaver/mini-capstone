@@ -1,8 +1,10 @@
 <h1>Here Is Your Product:</h1>
-<p><%= @product.name %></p>
-
-<p><img src="<%= @product.image %>"></p>
-<p><%= @product.description %></p>
+<p>Name: <%= @product.name %></p>
+<% @product.images.each do |image| %>
+	<p><img src="<%= image.url %>"></p>
+<% end %>
+<p>Description: <%= @product.description %></p>
+<p>Supplier: <%= @supplier.name %></p>
 
 <h2><%= @product.sale_message %></h2>
 
@@ -12,6 +14,15 @@
 <p>Tax: <%= number_to_currency(@product.tax) %></p>
 <p>Total: <%= number_to_currency(@product.total) %></p>
 
+<%= form_tag "/orders?product_id=#{@product.id}", method: :post do %>
+<p><%= label_tag :quantity %>
+<%= text_field_tag :quantity %></p>
+<%= submit_tag "Buy Now" %>
+<% end %>
+
+<br>
+<br>
+<br>
 
 <%= button_to("Edit Product", "/products/#{@product.id}/edit", method: :get) %>
 <%= button_to("Remove Product", "/products/#{@product.id}", method: :delete) %>

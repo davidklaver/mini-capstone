@@ -1,4 +1,8 @@
 class Product < ApplicationRecord
+	belongs_to :supplier
+	belongs_to :user
+	has_many :images
+	has_many :orders
 	def sale_message
 		if price.to_i < 2
 			message = "Discount Item!"

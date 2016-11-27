@@ -8,5 +8,7 @@
 <%= text_field_tag :image %></p>
 <p><%= label_tag :description %>
 <%= text_field_tag :description %></p>
+<p><%= label_tag :supplier_id %>
+<%= collection_select(:Product, :supplier_id, Supplier.all, :id, :name) %></p>
 <%= submit_tag "Add Product" %>
 <% end %>
