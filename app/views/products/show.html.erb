@@ -5,6 +5,10 @@
 <% end %>
 <p>Description: <%= @product.description %></p>
 <p>Supplier: <%= @supplier.name %></p>
+<p>Categories:</p>
+<% @product.categories.each do |category| %>
+	<a href="/products?category=<%= category.name %>"><%= category.name %></a>
+<% end %>
 
 <h2><%= @product.sale_message %></h2>
 
