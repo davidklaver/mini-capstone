@@ -1,12 +1,2 @@
 <h1>Here's a form to update your product:</h1>
-<%= form_tag "/products/#{@product.id}", method: :patch do %>
-<p><%= label_tag :name %>
-<%= text_field_tag :name, @product.name %></p>
-<p><%= label_tag :price %>
-<%= text_field_tag :price, @product.price %></p>
-<p><%= label_tag :image %>
-<%= text_field_tag :image, @product.image %></p>
-<p><%= label_tag :description %>
-<%= text_field_tag :description, @product.description %></p>
-<%= submit_tag "Update Product" %>
-<% end %>
+<%= render 'form.html.erb', route: "/products/#{@product.id}", form_method: :patch, message: "Update Product" %>

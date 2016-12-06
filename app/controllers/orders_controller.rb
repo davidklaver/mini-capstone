@@ -1,25 +1,25 @@
 class OrdersController < ApplicationController
-
+before_action :authenticate_user!
 def create
-		product = Product.find(params["product_id"])
-		quantity = params["quantity"].to_i
-		subtotal = product.price * quantity
-		tax = product.tax * quantity
-		total = subtotal + tax
-  	order = Order.create!(
-  		user_id: current_user.id, 
-  		quantity: quantity, 
-  		product_id: params["product_id"], 
-  		subtotal: subtotal, 
-  		tax: tax, 
-  		total: total
-  		)
-  	flash[:success] = "You've ordered this product!"
-  	# redirect_to "/orders/#{product.id}"
-  	redirect_to "/orders/#{order.id}" 
+# i) Find all of the current user’s products that have a status of “carted”.
+  carted_products = current_user.carted_products.where("status = ?", "carted")
+# ii) Use that data to create a new row in the orders table, and save the user_id, subtotal, tax, and total.
+  	order1 = Order.create(user_id: current_user.id)
+  
+    # iii) Modify all the rows from the carted_products table so that their status changes to “purchased” and that they are given the appropriate order_id.
+
+    carted_products.each do |carted_product|
+      carted_product.update(status: "purchased", order_id: order1.id)
+    end
+
+    order1.update(subtotal: order1.order_subtotal, tax: order1.order_tax, total: order1.order_total)
+
+  	flash[:success] = "Your order has been placed!"
+  	redirect_to "/orders/#{order1.id}" 
   end
 
   def show
-  	@order = Order.find_by(id: params["id"])
+  	@order = Order.find(params["id"])
+    redirect_to "/products" unless current_user.admin || current_user.id == @order.user_id
   end
 end

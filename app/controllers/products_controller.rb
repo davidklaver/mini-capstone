@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+	before_action :authenticate_admin!, only: [:create, :update, :destroy, :new, :edit]
 	def index
 		if params["show"] == "discount"
 			@products = Product.where("price < ?", 5)
@@ -25,23 +26,31 @@ class ProductsController < ApplicationController
 		else
 			@id = params["id"]
 		end
-		@product = Product.find_by(id: @id)
-		@supplier = Supplier.find_by(id: @product.supplier_id)
+		@product = Product.find(@id)
+		@supplier = Supplier.find(@product.supplier_id)
 		# @images = Image.where(product_id: @product.id)
 		render 'show.html.erb'
 	end
 
 	def new
+		@product = Product.new
 	end
 
 	def create
-		# p params["Product"]
-		# p "*" * 50
-		product = Product.create!(name: params["name"], price: params["price"], description: params["description"], supplier_id: params["Product"]["supplier_id"], user_id: session[:user_id])
-		# product.save
-		# add a flash message
-		flash[:success] = "You added a new product!"
-		redirect_to "/products/#{product.id}"
+		@product = Product.new(
+			name: params["name"],
+			price: params["price"],
+			description: params["description"],
+			supplier_id: params["Product"]["supplier_id"],
+			user_id: session[:user_id]
+		)
+		
+		if @product.save
+			flash[:success] = "You added a new product!"
+			redirect_to "/products/#{@product.id}"
+		else
+			render 'new.html.erb'
+		end
 	end
 
 	def edit
@@ -49,10 +58,18 @@ class ProductsController < ApplicationController
 	end
 
 	def update
-		product = Product.find_by(id: params["id"])
-		product.update(name: params["name"], price: params["price"], image: params["image"], description: params["description"])
-		flash[:info] = "You updated a product!"
-		redirect_to "/products/#{product.id}"
+		@product = Product.find_by(id: params["id"])
+		if @product.update(
+			name: params["name"],
+			price: params["price"],
+			description: params["description"],
+			supplier_id: params["Product"]["supplier_id"]
+		)
+			flash[:success] = "You updated a product!"
+			redirect_to "/products/#{@product.id}"
+		else
+			render 'edit.html.erb'
+		end
 	end
 
 	def destroy

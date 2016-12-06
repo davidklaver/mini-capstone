@@ -1,10 +1,16 @@
 class Product < ApplicationRecord
 	belongs_to :supplier
-	belongs_to :user
+	belongs_to :user, optional: true
 	has_many :images
-	has_many :orders
 	has_many :categorized_products
 	has_many :categories, through: :categorized_products
+	has_many :carted_products
+	has_many :users, through: :carted_products
+
+	validates :name, presence: true
+	validates :price, :numericality => {:greater_than => 0, :less_than => 1000}
+	# validates :stock, presence: true
+
 	def sale_message
 		if price.to_i < 2
 			message = "Discount Item!"

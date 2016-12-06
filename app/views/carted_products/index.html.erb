@@ -1,0 +1,32 @@
+<h1>This is your cart:</h1>
+
+<table class="cartTable">
+	<tr>
+		<th>Product name</th>
+		<th>Quantity</th>
+		<th>Price</th>
+		<th>Remove Product</th>
+	</tr>
+	<% @carted_products.each do |carted_product| %>
+		<tr>
+			<td><a href="/products/<%= carted_product.product_id %>"><%= carted_product.product.name %></a></td>
+			<td><%= carted_product.quantity %></td>
+			<td><%= number_to_currency(carted_product.product_subtotal) %></td>
+			<td><%= button_to("Remove Product", "/carted_products/#{carted_product.id}", method: :delete) %></td>
+		</tr>
+	<% end %>
+	<tr>
+		<td>Subtotal: <%= number_to_currency(@subtotal) %></td>
+	</tr>
+	<tr>
+		<td>Tax: <%= number_to_currency(@tax) %></td>
+	</tr>
+	<tr>
+		<td>Total: <%= number_to_currency(@total) %></td>
+	</tr>
+</table>
+<%= form_tag "/orders", method: :post do %>
+<%= submit_tag "Place Order", class: "btn btn-primary" %>
+<% end %>
+<br>
+<a href="/products"><button type="button" class="btn btn-success">Back To Products</button></a>

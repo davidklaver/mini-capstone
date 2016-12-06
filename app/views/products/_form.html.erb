@@ -1,0 +1,22 @@
+<% if @product.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+ 
+    <ul class="errorsList">
+    <% @product.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= form_tag route, method: form_method do %>
+	<p><%= label_tag :name %>
+	<%= text_field_tag :name, @product.name %></p>
+	<p><%= label_tag :price %>
+	<%= text_field_tag :price, @product.price %></p>
+	<p><%= label_tag :description %>
+	<%= text_field_tag :description, @product.description %></p>
+	<p><%= label_tag :supplier_id %>
+	<%= collection_select :Product, :supplier_id, Supplier.all, :id, :name, :selected => @product.supplier_id %></p>
+	<%= submit_tag message %>
+<% end %>

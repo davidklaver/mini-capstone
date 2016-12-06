@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>MiniCapstone</title>
+    <title>Dave's Shop</title>
+
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag 'ds_logo.ico' %>
   </head>
 
   <body>
-  <nav class="navbar navbar-inverse navbar-default">
+  <nav class="navbar navbar-inverse navbar-default" id="navbar">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -19,13 +22,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/products">Dave's Shop</a>
+      <%= image_tag("ds_logo.png", :class => "navbar-brand logo") %><a class="navbar-brand" id="name" href="/products">Dave's Shop</a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="/products?show=discount">Discount Items<span class="sr-only">(current)</span></a></li>
+        <li><a href="/products?show=discount">Discount Items<span class="sr-only">(current)</span></a></li>
         <li><a href="/products/rand">Show Random Product</a></li>
         <% if current_page?(:controller => 'products', :action => 'index') %>
           <li class="dropdown">
@@ -37,46 +40,41 @@
               <li><a href="/products?sort_by=price&order=desc">Sort By Price (high to low)</a></li>
             </ul>
           </li>
-        <% end %>
-      </ul>
-      <div id="searchDiv">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <% Category.all.each do |category| %>
+              <li><a href="/products?category=<%= category.name %>"><%= category.name %></a></li>
+            <% end %>
+          </ul>
+        </li>
+        <li id="searchDiv">
         <%= form_tag '/products', method: :get do %>
           <%= text_field_tag :search %>
           <%= submit_tag "Search" %>
         <% end %>
-        </div>
+        </li>
+      <% end %>
+      </ul>
+      
       <ul class="nav navbar-nav navbar-right">
         <% if current_user %>
           <li><a href="#">Welcome <%= current_user.name %>!</a></li>
           <li><a href="/logout">Log Out</a></li>
+          <li><a href="/carted_products"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Cart (<%= cart_count %>)</a></li>
         <% else %>
           <li><a href="/signup">Sign Up</a></li>
          <li><a href="/login">Log In</a></li>
         <% end %>
-
-        
-         
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories<span class="caret"></span></a>
-          <ul class="dropdown-menu">
-          <% Category.all.each do |category| %>
-            <li><a href="/products?category=<%= category.name %>"><%= category.name %></a></li>
-          <% end %>
-            <!-- <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li> -->
-          </ul>
-        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
   <% flash.each do |name, message| %>
-  <div class="alert alert-<%= name %> alert-dismissible" role="alert">
-  	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<%= message %>
-</div>
+    <div class="alert alert-<%= name %> alert-dismissible" role="alert">
+    	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    	<%= message %>
+    </div>
   <% end %>
   
     <%= yield %>
